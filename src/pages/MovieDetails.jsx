@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Spinner from "../components/Spinner";
 import { get } from "../utils/httpClient";
-import movie from "./movie.json";
 import styles from "./MovieDetails.module.css";
 
 const MovieDetails = () => {
-  const {movieId}= useParams();
-  const [movie, setMovie] = useState(null)
+  const { movieId } = useParams();
+  const [isLoading, setIsLoading] = useState(true);//SPINNER
+  const [movie, setMovie] = useState(null);
 
-  useEffect( () => {
-    get('/movie/' + movieId).then( data => {
-      setMovie(data)
+  useEffect(() => {
+    setIsLoading(true); //SPINNER
+
+    get("/movie/" + movieId).then((data) => {
+      setIsLoading(false);
+      setMovie(data);
       console.log(data);
-    })
-  },[movieId])
-  if (!movie){
+    });
+  }, [movieId]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (!movie) {
     return null;
   }
 
@@ -22,10 +35,13 @@ const MovieDetails = () => {
 
   return (
     <div className={styles.detailsContainer}>
-      <img 
-        className= {`${styles.col} ${styles.movieImage}`}
-        src={imageUrl} key={movie.id} alt={movie.title} />
-      <div className= {styles.col}>
+      <img
+        className={`${styles.col} ${styles.movieImage}`}
+        src={imageUrl}
+        key={movie.id}
+        alt={movie.title}
+      />
+      <div className={styles.col}>
         <p>
           <strong>Title:</strong> {movie.title}
         </p>
@@ -36,7 +52,9 @@ const MovieDetails = () => {
         <p>
           <strong>Description:</strong> {movie.overview}
         </p>
-        <p><strong>Año:</strong>{' '}{movie.release_date}</p>
+        <p>
+          <strong>Año:</strong> {movie.release_date}
+        </p>
       </div>
     </div>
   );

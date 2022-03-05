@@ -12,6 +12,8 @@
 .movieImage{
     border-radius: 10px;
     background-color: azure;
+    width: 300px;
+    height:auto;
 }
 @media (max-width:560px){
     .movieImage{
