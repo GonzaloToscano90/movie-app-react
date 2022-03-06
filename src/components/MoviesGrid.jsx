@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { get } from "../utils/httpClient";
 import MovieCard from "./MovieCard";
 import styles from "./MoviesGrid.module.css";
-import { get } from "../utils/httpClient";
 import Spinner from "./Spinner";
 
-const MoviesGrid = () => {
+
+
+const MoviesGrid = ( {search} ) => {
   // let movies = []
-  const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState([]);
-  useEffect(
-    () => [
-      setIsLoading(true),
-      get("/discover/movie").then((data) => {
-        setIsLoading(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  
+  useEffect(() => {
+      setIsLoading(true)
+      const searchUrl = search
+        ? "/search/movie?query=" + search
+        : "/discover/movie";
+      get(searchUrl).then((data) => {
         setMovies(data.results);
+        setIsLoading(false);
         // movies= data.results;
-        console.log(movies);
-      }),
-    ],
-    []
-  );
+        // console.log(movies);
+      });
+  }, [search]);
+    
+  
 
   if (isLoading) {
     return (

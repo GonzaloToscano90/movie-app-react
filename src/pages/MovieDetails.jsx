@@ -20,7 +20,7 @@ const MovieDetails = () => {
   }, [movieId]);
 
   if (isLoading) {
-    return (
+    return (  
       <div>
         <Spinner />
       </div>
