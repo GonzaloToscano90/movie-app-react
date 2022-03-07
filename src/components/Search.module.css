@@ -1,6 +1,7 @@
 .searchContainer{
     display: flex;
     justify-content: center;
+    
 }
 .searchBox{
     position: relative;
